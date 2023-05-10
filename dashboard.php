@@ -9,6 +9,16 @@ if (isset($_POST['logout'])) {
     header('location:login.php');
 }
 
+setcookie('mode', $_COOKIE['mode'] ?? 'light', time() + 120);
+if (isset($_POST['mode'])) {
+    if ($_POST['mode'] == 'dark') {
+        setcookie('mode', 'dark', time() + 120);
+    } else {
+        setcookie('mode', 'light', time() + 120);
+    }
+    header('location:dashboard.php');
+}
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -21,7 +31,18 @@ if (isset($_POST['logout'])) {
 </head>
 
 <body>
-    <div class="container mt-5">
+    <div class="container mt-5 p-5 <?php echo $_COOKIE['mode'] == 'dark' ? 'bg-dark' : null ?>">
+        <?php
+        if ($_COOKIE['mode'] == 'dark') {
+        ?>
+            <form action="" method="post">
+                <button type="submit" name="mode" value="light" class="btn btn-light">Light</button>
+            </form>
+        <?php } else { ?>
+            <form action="" method="post">
+                <button type="submit" name="mode" value="dark" class="btn btn-dark">Dark</button>
+            </form>
+        <?php } ?>
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
